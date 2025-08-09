@@ -1,0 +1,22 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --background: rgb(255, 255, 255);
+  --tile-border: rgb(224, 224, 231);
+  --tile-bg: rgb(251, 252, 255);
+  --tile-bg-selected: rgb(171, 174, 183);
+
+  --text-color: rgb(56, 60, 72);
+  --text-color-final: rgb(249, 255, 255);
+
+  --incorrect: rgb(164, 175, 197);
+  --close: rgb(243, 194, 55);
+  --correct: rgb(121, 184, 80);
+
+  --keyboard-tile: rgb(221, 225, 237);
+  --keyboard-text: rgb(67, 77, 122);
+}
