@@ -1,12 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
+@font-face {
+  font-family: 'Clear Sans';
+  src: url('./assets/fonts/ClearSans-Regular.woff') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Clear Sans';
+  src: url('./assets/fonts/ClearSans-Bold.woff') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NYTKarnakCondensed";
+  src: url("https://db.onlinewebfonts.com/t/4789cf828c01b22acb9b2b73ee91aa0d.eot");
+  src: url("https://db.onlinewebfonts.com/t/4789cf828c01b22acb9b2b73ee91aa0d.eot?#iefix")format("embedded-opentype"),
+  url("https://db.onlinewebfonts.com/t/4789cf828c01b22acb9b2b73ee91aa0d.woff2")format("woff2"),
+  url("https://db.onlinewebfonts.com/t/4789cf828c01b22acb9b2b73ee91aa0d.woff")format("woff"),
+  url("https://db.onlinewebfonts.com/t/4789cf828c01b22acb9b2b73ee91aa0d.ttf")format("truetype"),
+  url("https://db.onlinewebfonts.com/t/4789cf828c01b22acb9b2b73ee91aa0d.svg#NYTKarnakCondensed")format("svg");
+}
+
 :root {
-  font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: black;
+  background-color: white;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
