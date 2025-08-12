@@ -20,6 +20,9 @@
 
   --keyboard-tile: rgb(221, 225, 237);
   --keyboard-text: rgb(67, 77, 122);
+
+  --message-background: rgb(26, 26, 24);
+  --restart-button: rgb(105, 171, 99);
 }
 
 .app {
@@ -37,16 +40,19 @@
 
 .top-banner {
   border-bottom: 1px solid var(--header-border);
+  background-color: var(--background);
   display: flex;
+  position: relative;
   justify-content: center;
   padding: 0.5%;
+  z-index: 101;
 }
 
 .board {
   display: flex;
   flex-direction: column;
   
-  margin-top: 4.5rem;
+  margin-top: 2rem;
 
   justify-content: center;
   align-items: center;
@@ -95,4 +101,61 @@
 .tile.incorrect {
   color: var(--text-color-final);
   background-color: var(--incorrect);
+}
+
+/* Notifications */
+.notification-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100vh;
+  background-color: rgb(255, 255, 255, 0.5);
+  z-index: 100;
+  display: flex;
+}
+
+.notification-wrapper.show {
+  display: flex;
+}
+
+.notification {
+  padding: 10%;
+  position: relative;
+  margin: auto;
+  width: 10%;
+  height: 10%;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.message-wrapper {
+  display: flex;
+  min-height: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+  visibility: none;
+}
+
+.message-wrapper.show {
+  visibility: none;
+}
+
+.message {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  background-color: var(--message-background);
+  text-align: center;
+}
+
+.message-text {
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.restart-button {
+  background-color: var(--restart-button);
 }

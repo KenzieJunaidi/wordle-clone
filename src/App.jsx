@@ -19,13 +19,19 @@ function App() {
   const fetchAPI = () => {
     axios.get("https://random-words-api.kushcreates.com/api?language=en&category=wordle&length=5&type=uppercase")
     .then((res) => {
-      const wordBank = res.data;
-      const randomIndex = Math.floor(Math.random() * wordBank.length);
+      const wordBank = res.data
+      let randomIndex = Math.floor(Math.random() * wordBank.length);
       setAnswer(wordBank[randomIndex].word);
     })
     .catch((error) => {
       console.error("Error: ", error);
     })
+  };
+
+  // Randomize Words
+  const randomizeWord = () => {
+    const randomIndex = Math.floor(Math.random() * wordBank.length);
+    // setAnswer(res.data[randomIndex].word);
   };
 
   // Validate Answer
@@ -38,6 +44,13 @@ function App() {
       return false;
     }
   }
+
+  const handleRestart = () => {
+    setGameStatus("");
+    setIsFinish(false);
+    setGuesses(Array(6).fill(null));
+    randomizeWord();
+  };
 
   useEffect(() => {
     fetchAPI();
@@ -93,7 +106,11 @@ function App() {
   return (
     <motion.div className={`app ${isLoaded ? "loaded" : ""}`}>
       <Header />
-      {answer}
+      <motion.div className={`message-wrapper ${isFinish ? "show" : ""}`}>
+        <motion.div className="message">
+          <p className="message-text">{gameStatus === 'Win' ? "You got it!" : answer}</p>
+        </motion.div>
+      </motion.div>
       <motion.div className="board">
         {guesses.map((items, index) => {
           const currentIndex = index === guesses.findIndex(val => val == null);
@@ -103,7 +120,11 @@ function App() {
           )
         })}
       </motion.div>
-      <motion.div className={`notification ${isFinish? "show" : ""}`} />
+      <motion.div className="notification-wrapper">
+        <motion.div className={`notification ${isFinish? "show" : ""}`}>
+          <button className="restart-button" onClick={handleRestart}>Play Again</button>
+        </motion.div>
+      </motion.div>
     </motion.div>
   )
 }
