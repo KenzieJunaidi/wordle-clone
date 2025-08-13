@@ -4,6 +4,7 @@ import axios from 'axios';
 import './App.css'
 import { Header } from './components/Header';
 import { Line } from './components/Line';
+import words from './assets/words/words.json';
 
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -15,23 +16,10 @@ function App() {
 
   const WORD_LENGTH = 5;
 
-  // Fetch API
-  const fetchAPI = () => {
-    axios.get("https://random-words-api.kushcreates.com/api?language=en&category=wordle&length=5&type=uppercase")
-    .then((res) => {
-      const wordBank = res.data
-      let randomIndex = Math.floor(Math.random() * wordBank.length);
-      setAnswer(wordBank[randomIndex].word);
-    })
-    .catch((error) => {
-      console.error("Error: ", error);
-    })
-  };
-
   // Randomize Words
   const randomizeWord = () => {
-    const randomIndex = Math.floor(Math.random() * wordBank.length);
-    // setAnswer(res.data[randomIndex].word);
+    const randomIndex = Math.floor(Math.random() * words.length);
+    setAnswer(words[randomIndex]);
   };
 
   // Validate Answer
@@ -53,8 +41,8 @@ function App() {
   };
 
   useEffect(() => {
-    fetchAPI();
     setIsLoaded(true);
+    randomizeWord();
   }, []);
 
   useEffect(() => {
@@ -108,7 +96,7 @@ function App() {
       <Header />
       <motion.div className={`message-wrapper ${isFinish ? "show" : ""}`}>
         <motion.div className="message">
-          <p className="message-text">{gameStatus === 'Win' ? "You got it!" : answer}</p>
+          <p className="message-text">{gameStatus === 'Win' ? "Awesome!" : answer}</p>
         </motion.div>
       </motion.div>
       <motion.div className="board">
@@ -122,7 +110,24 @@ function App() {
       </motion.div>
       <motion.div className="notification-wrapper">
         <motion.div className={`notification ${isFinish? "show" : ""}`}>
-          <button className="restart-button" onClick={handleRestart}>Play Again</button>
+          <motion.div className="stats">
+            <h3>STATISTICS</h3>
+            <motion.div className="stats-card-wrapper">
+              <motion.div className="stats-card">
+                <h5>0</h5>
+                <p>Played</p>
+              </motion.div>
+              <motion.div className="stats-card">
+                <h5>0</h5>
+                <p>Win %</p>
+              </motion.div>
+              <motion.div className="stats-card">
+                <h5>0</h5>
+                <p>Current Streak</p>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+          <button className="restart-button" onClick={handleRestart}>PLAY AGAIN!</button>
         </motion.div>
       </motion.div>
     </motion.div>
