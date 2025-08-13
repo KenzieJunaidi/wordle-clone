@@ -1,9 +1,6 @@
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
 
 export const Line = (props) => {
-    // props.guess
-    // props.isCheck
 
     const WORD_LENGTH = 5;
     const tiles = [];
