@@ -13,6 +13,7 @@ function App() {
   const [currentGuess, setCurrentGuess] = useState("");
   const [isFinish, setIsFinish] = useState(false);
   const [gameStatus, setGameStatus] = useState("");
+  const [notification, setNotification] = useState(false);
 
   const WORD_LENGTH = 5;
 
@@ -35,6 +36,7 @@ function App() {
 
   const handleRestart = () => {
     setGameStatus("");
+    setCurrentGuess("");
     setIsFinish(false);
     setGuesses(Array(6).fill(null));
     randomizeWord();
@@ -72,6 +74,17 @@ function App() {
             setIsFinish(true);  
             setGameStatus("Win");
           }
+
+          if(!tempGuesses.some(val => val === null)){
+            setIsFinish(true);
+            setGameStatus("Lose");
+          }
+        }
+        else{
+          setNotification(true);
+          setTimeout(() => {
+            setNotification(false);
+          }, 3000);
         }
       }
 
@@ -89,16 +102,26 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeydown);
     }
-  }, [currentGuess]);
+  }, [currentGuess, answer, guesses]);
 
   return (
     <motion.div className={`app ${isLoaded ? "loaded" : ""}`}>
       <Header />
-      <motion.div className={`message-wrapper ${isFinish ? "show" : ""}`}>
-        <motion.div className="message">
-          <p className="message-text">{gameStatus === 'Win' ? "Awesome!" : answer}</p>
+
+      {notification ?
+        <motion.div className={`message-wrapper show`}>
+          <motion.div className="message">
+            <p className="message-text">Invalid Word</p>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      :
+        <motion.div className={`message-wrapper ${isFinish ? "show" : ""}`}>
+          <motion.div className="message">
+            <p className="message-text">{gameStatus === 'Win' ? "Awesome!" : answer}</p>
+          </motion.div>
+        </motion.div>
+      }
+
       <motion.div className="board">
         {guesses.map((items, index) => {
           const currentIndex = index === guesses.findIndex(val => val == null);
@@ -108,8 +131,8 @@ function App() {
           )
         })}
       </motion.div>
-      <motion.div className="notification-wrapper">
-        <motion.div className={`notification ${isFinish? "show" : ""}`}>
+      <motion.div className={`notification-wrapper ${isFinish? "show" : ""}`}>
+        <motion.div className="notification">
           <motion.div className="stats">
             <h3>STATISTICS</h3>
             <motion.div className="stats-card-wrapper">
