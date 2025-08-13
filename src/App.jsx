@@ -15,12 +15,18 @@ function App() {
   const [gameStatus, setGameStatus] = useState("");
   const [notification, setNotification] = useState(false);
 
+  const [gamesPlayed, setGamesPlayed] = useState(1);
+  const [win, setWin] = useState(0);
+  const [winrate, setWinrate] = useState(0);
+  const [currStreak, setCurrStreak] = useState(0);
+
   const WORD_LENGTH = 5;
 
   // Randomize Words
   const randomizeWord = () => {
     const randomIndex = Math.floor(Math.random() * words.length);
     setAnswer(words[randomIndex]);
+    console.log(words[randomIndex]);
   };
 
   // Validate Answer
@@ -34,14 +40,19 @@ function App() {
     }
   }
 
+  // Play Again Function
   const handleRestart = () => {
     setGameStatus("");
     setCurrentGuess("");
     setIsFinish(false);
     setGuesses(Array(6).fill(null));
     randomizeWord();
+    
+    setGamesPlayed(prevGames => prevGames + 1);
+    console.log(gamesPlayed);
   };
 
+  // First Load useEffect
   useEffect(() => {
     setIsLoaded(true);
     randomizeWord();
@@ -73,13 +84,19 @@ function App() {
           if(currentGuess === answer){
             setIsFinish(true);  
             setGameStatus("Win");
+
+            setCurrStreak(prevStreak => prevStreak + 1);
+            setWin(prevWin => prevWin + 1);
           }
 
           if(!tempGuesses.some(val => val === null)){
             setIsFinish(true);
             setGameStatus("Lose");
+
+            setCurrStreak(0);
           }
         }
+
         else{
           setNotification(true);
           setTimeout(() => {
@@ -103,6 +120,11 @@ function App() {
       window.removeEventListener("keydown", handleKeydown);
     }
   }, [currentGuess, answer, guesses]);
+
+  // Calculate Winrate
+  useEffect(() => {
+    setWinrate(Math.floor(win/gamesPlayed * 100));
+  }, [win, gamesPlayed])
 
   return (
     <motion.div className={`app ${isLoaded ? "loaded" : ""}`}>
@@ -137,15 +159,15 @@ function App() {
             <h3>STATISTICS</h3>
             <motion.div className="stats-card-wrapper">
               <motion.div className="stats-card">
-                <h5>0</h5>
+                <h5>{gamesPlayed}</h5>
                 <p>Played</p>
               </motion.div>
               <motion.div className="stats-card">
-                <h5>0</h5>
+                <h5>{winrate}</h5>
                 <p>Win %</p>
               </motion.div>
               <motion.div className="stats-card">
-                <h5>0</h5>
+                <h5>{currStreak}</h5>
                 <p>Current Streak</p>
               </motion.div>
             </motion.div>
