@@ -76,6 +76,9 @@
   height: 5rem;
   border: 1px solid var(--tile-border);
   background-color: var(--tile-bg);
+  color: var(--text-color);
+  --final-bg: var(--tile-bg);
+  --text-color-final: var(--text-color);
 
   font-size: 2.5rem;
   font-weight: 800;
@@ -89,18 +92,18 @@
 }
 
 .tile.correct {
-  color: var(--text-color-final);
-  background-color: var(--correct);
+  --final-bg: var(--correct);
+  --text-color-final: var(--background);
 }
 
 .tile.close {
-  color: var(--text-color-final);
-  background-color: var(--close);
+  --final-bg: var(--close);
+  --text-color-final: var(--background);
 }
 
 .tile.incorrect {
-  color: var(--text-color-final);
-  background-color: var(--incorrect);
+  --final-bg: var(--incorrect);
+  --text-color-final: var(--background);
 }
 
 /* Message */
@@ -109,11 +112,18 @@
   min-height: 1rem;
   margin-top: 2rem;
   justify-content: center;
+
   visibility: hidden;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: opacity 0.4 ease, transform 0.4 ease, visibility 0s linear 4s;
 }
 
 .message-wrapper.show {
   visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 1.5s;
 }
 
 .message {
@@ -132,6 +142,7 @@
 /* Notifications */
 .notification-wrapper {
   position: absolute;
+  display: flex;
   top: 0;
   left: 0;
 
@@ -139,11 +150,16 @@
   height: 100vh;
   background-color: rgb(255, 255, 255, 0.5);
   z-index: 100;
-  display: none;
+
+  visibility: hidden; 
+  opacity: 0;
+  transition: opacity 1.2s ease, visibility 0s linear 0.4s;
 }
 
 .notification-wrapper.show {
-  display: flex;
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 2.5s;
 }
 
 .notification {
@@ -201,4 +217,30 @@
   font-weight: 700;
 
   border: none;
+}
+
+/* Keyframes */
+.shake {
+  animation: shake-animation 0.4s ease-in-out;
+}
+
+@keyframes shake-animation {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(5px);
+  }
+  40% {
+    transform: translateX(-5px);
+  }
+  60% {
+    transform: translateX(5px);
+  }
+  80% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }

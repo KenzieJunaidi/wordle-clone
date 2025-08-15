@@ -11,14 +11,19 @@ function App() {
   const [answer, setAnswer] = useState("");
   const [guesses, setGuesses] = useState(Array(6).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
+
+  // Status Const
   const [isFinish, setIsFinish] = useState(false);
   const [gameStatus, setGameStatus] = useState("");
-  const [notification, setNotification] = useState(false);
 
+  // Stats Const
   const [gamesPlayed, setGamesPlayed] = useState(1);
   const [win, setWin] = useState(0);
   const [winrate, setWinrate] = useState(0);
   const [currStreak, setCurrStreak] = useState(0);
+
+  // Effects Const
+  const [shake, setShake] = useState(false);
 
   const WORD_LENGTH = 5;
 
@@ -47,9 +52,7 @@ function App() {
     setIsFinish(false);
     setGuesses(Array(6).fill(null));
     randomizeWord();
-    
     setGamesPlayed(prevGames => prevGames + 1);
-    console.log(gamesPlayed);
   };
 
   // First Load useEffect
@@ -58,8 +61,8 @@ function App() {
     randomizeWord();
   }, []);
 
+  // Keydown Event
   useEffect(() => {
-    // Keydown Event
     const handleKeydown = async (event) => {
       if(isFinish){
         return;
@@ -77,10 +80,11 @@ function App() {
         if(await isValid()){
           const tempGuesses = [...guesses];
           tempGuesses[guesses.findIndex(val => val == null)] = currentGuess;
-          
+
           setGuesses(tempGuesses);
           setCurrentGuess("");
 
+          // Win Condition
           if(currentGuess === answer){
             setIsFinish(true);  
             setGameStatus("Win");
@@ -89,6 +93,7 @@ function App() {
             setWin(prevWin => prevWin + 1);
           }
 
+          // Lose Condition
           if(!tempGuesses.some(val => val === null)){
             setIsFinish(true);
             setGameStatus("Lose");
@@ -98,10 +103,11 @@ function App() {
         }
 
         else{
-          setNotification(true);
+
+          setShake(true);
           setTimeout(() => {
-            setNotification(false);
-          }, 3000);
+            setShake(false);
+          }, 400)
         }
       }
 
@@ -130,26 +136,21 @@ function App() {
     <motion.div className={`app ${isLoaded ? "loaded" : ""}`}>
       <Header />
 
-      {notification ?
-        <motion.div className={`message-wrapper show`}>
-          <motion.div className="message">
-            <p className="message-text">Invalid Word</p>
-          </motion.div>
+      <motion.div className={`message-wrapper ${isFinish ? "show" : ""}`}>
+        <motion.div className="message">
+          <p className="message-text">{gameStatus === 'Win' ? "Awesome!" : answer}</p>
         </motion.div>
-      :
-        <motion.div className={`message-wrapper ${isFinish ? "show" : ""}`}>
-          <motion.div className="message">
-            <p className="message-text">{gameStatus === 'Win' ? "Awesome!" : answer}</p>
-          </motion.div>
-        </motion.div>
-      }
+      </motion.div>
 
       <motion.div className="board">
         {guesses.map((items, index) => {
-          const currentIndex = index === guesses.findIndex(val => val == null);
+          const isCurrIndex = index === guesses.findIndex(val => val == null);
+          const currIndex = guesses.findIndex(val => val == null);
 
           return (
-            <Line key = {index} guess = {currentIndex ? currentGuess : items ?? ""} isCheck = {!currentIndex && items != null} answer = {answer}/>
+            <Line key = {index} index = {index} currIndex = { currIndex } guess = {isCurrIndex ? currentGuess : items ?? ""} isCheck = {!isCurrIndex && items != null} answer = {answer}
+              shake = {shake}
+            />
           )
         })}
       </motion.div>
